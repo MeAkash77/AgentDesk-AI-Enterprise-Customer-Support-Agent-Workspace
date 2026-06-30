@@ -1,8 +1,9 @@
 "use client";
 
-import { useEffect, useMemo, useState, use } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
+import type { Variants } from "framer-motion";
 import { 
   ArrowLeft, 
   Clock, 
@@ -39,26 +40,39 @@ const VERTICAL_LABELS: Record<string, string> = {
   general: "General",
 };
 
-// Framer Motion Variants
-const containerVariants = {
+// Framer Motion Variants with proper typing
+const containerVariants: Variants = {
   hidden: { opacity: 0 },
   show: {
     opacity: 1,
-    transition: { staggerChildren: 0.1 },
+    transition: { 
+      staggerChildren: 0.1,
+      type: "spring" as const,
+      stiffness: 100,
+      damping: 20,
+    },
   },
 };
 
-const itemVariants = {
+const itemVariants: Variants = {
   hidden: { opacity: 0, y: 20 },
   show: { 
     opacity: 1, 
     y: 0,
-    transition: { type: "spring", stiffness: 100, damping: 20 }
+    transition: { 
+      type: "spring" as const, 
+      stiffness: 100, 
+      damping: 20 
+    },
   },
 };
 
-export default function BusinessDetail({ params }: { params: Promise<{ id: string }> }) {
-  const { id } = use(params);
+export default async function BusinessDetail({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}) {
+  const { id } = await params;
   const [biz, setBiz] = useState<Business | null>(null);
   const [calls, setCalls] = useState<Call[]>([]);
   const [loading, setLoading] = useState(true);
