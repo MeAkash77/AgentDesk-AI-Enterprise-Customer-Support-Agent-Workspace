@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useRef, useCallback, useEffect, use } from "react";
+import React, { useState, useRef, useCallback, useEffect } from "react";
 import {
   ReactFlow,
   ReactFlowProvider,
@@ -43,8 +43,8 @@ const getId = () => `dndnode_${id++}`;
 
 function FlowEditor({ businessId }: { businessId: string }) {
   const reactFlowWrapper = useRef<HTMLDivElement>(null);
-  const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
-  const [edges, setEdges, onEdgesChange] = useEdgesState([]);
+  const [nodes, setNodes, onNodesChange] = useNodesState<Node>(initialNodes);
+  const [edges, setEdges, onEdgesChange] = useEdgesState<Edge>([]);
   const [reactFlowInstance, setReactFlowInstance] = useState<any>(null);
   const [saving, setSaving] = useState(false);
   const [loading, setLoading] = useState(true);
@@ -56,10 +56,13 @@ function FlowEditor({ businessId }: { businessId: string }) {
       .then((cfg) => {
         setConfig(cfg);
         if (cfg.flow_data) {
-          const { nodes: savedNodes, edges: savedEdges } = cfg.flow_data as any;
-          if (savedNodes && savedNodes.length > 0) {
-            setNodes(savedNodes || []);
-            setEdges(savedEdges || []);
+          const { nodes: savedNodes = [], edges: savedEdges = [] } = cfg.flow_data as {
+            nodes: Node[];
+            edges: Edge[];
+          };
+          if (savedNodes.length > 0) {
+            setNodes(savedNodes);
+            setEdges(savedEdges);
           }
         }
       })
@@ -181,9 +184,13 @@ function FlowEditor({ businessId }: { businessId: string }) {
   );
 }
 
-export default function FlowEditorPage({ params }: { params: Promise<{ id: string }> }) {
-  const { id } = use(params);
-  
+export default async function FlowEditorPage({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}) {
+  const { id } = await params;
+
   return (
     <ReactFlowProvider>
       <FlowEditor businessId={id} />
