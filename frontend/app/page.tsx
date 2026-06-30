@@ -3,7 +3,7 @@ import {
   ArrowRight,
   CheckCircle,
   CodeBlock,
-  StackLayers,
+  Stack,
   MicrophoneStage,
   Planet,
   Browser,
