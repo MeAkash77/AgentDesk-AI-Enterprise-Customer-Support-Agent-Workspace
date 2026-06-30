@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
+import type { Variants } from "framer-motion";
 import {
   ArrowRight,
   Robot,
@@ -52,23 +53,30 @@ function callStatusLabel(status: Lead["status"]) {
   return "New lead";
 }
 
-// Framer Motion Variants
-const containerVariants = {
+// Framer Motion Variants with proper typing
+const containerVariants: Variants = {
   hidden: { opacity: 0 },
   show: {
     opacity: 1,
     transition: {
       staggerChildren: 0.1,
+      type: "spring" as const,
+      stiffness: 100,
+      damping: 20,
     },
   },
 };
 
-const itemVariants = {
+const itemVariants: Variants = {
   hidden: { opacity: 0, y: 20 },
   show: { 
     opacity: 1, 
     y: 0,
-    transition: { type: "spring", stiffness: 100, damping: 20 }
+    transition: { 
+      type: "spring" as const, 
+      stiffness: 100, 
+      damping: 20 
+    },
   },
 };
 
@@ -141,7 +149,12 @@ export default function Dashboard() {
             <motion.div 
               initial={{ scale: 0.9, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
-              transition={{ delay: 0.2, type: "spring", stiffness: 200, damping: 20 }}
+              transition={{ 
+                delay: 0.2, 
+                type: "spring" as const, 
+                stiffness: 200, 
+                damping: 20 
+              }}
               className="inline-flex items-center gap-2 rounded-full border border-zinc-200 bg-white/80 backdrop-blur-md px-4 py-2 text-sm font-medium text-zinc-800 shadow-sm"
             >
               <Sparkle weight="fill" className="h-4 w-4 text-emerald-500" />
@@ -225,7 +238,11 @@ export default function Dashboard() {
                       initial={{ opacity: 0, scale: 0.95 }}
                       animate={{ opacity: 1, scale: 1 }}
                       exit={{ opacity: 0, scale: 0.95 }}
-                      transition={{ type: "spring", stiffness: 100, damping: 20 }}
+                      transition={{ 
+                        type: "spring" as const, 
+                        stiffness: 100, 
+                        damping: 20 
+                      }}
                       className="surface-muted p-5 hover:bg-zinc-100 transition-colors"
                     >
                       <div className="flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
