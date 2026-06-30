@@ -90,7 +90,7 @@ export default function Home() {
             </div>
             <div className="hidden items-center gap-4 sm:flex">
               <a
-                href="https://github.com/princepal9120/agentdesk"
+                href="https://github.com/MeAkash77/AgentDesk-AI-Enterprise-Customer-Support-Agent-Workspace"
                 target="_blank"
                 rel="noreferrer"
                 className="btn-secondary"
